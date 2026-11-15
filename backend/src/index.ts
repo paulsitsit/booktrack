@@ -40,7 +40,7 @@ if (!adminEmail || !adminPassword || adminPassword.length < 12 || !sessionSecret
 
 
 
-const PENALTY_GRACE_DAYS = 15
+const PENALTY_GRACE_DAYS = 5
 
 const PENALTY_PER_DAY = 5
 
