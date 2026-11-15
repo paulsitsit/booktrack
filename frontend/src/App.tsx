@@ -247,16 +247,14 @@ function App() {
                 <table>
                   <thead>
                     <tr>
-                      <th>Student</th>
-                      <th>Course / program</th>
-                      <th>Year</th>
-                      <th>Contact</th>
-                      <th>Current book</th>
-                      <th>Borrowed on</th>
-                      <th>Days borrowed</th>
+                      <th>Student Name</th>
+                      <th>Email</th>
+                      <th>Book Title</th>
+                      <th>Date Borrowed</th>
+                      <th>Number of Days Borrowed</th>
+                      <th>Due Date</th>
                       <th>Overdue</th>
                       <th>Penalty</th>
-                      <th>Due date</th>
                       <th /></tr>
                   </thead>
                   <tbody>
@@ -268,15 +266,13 @@ function App() {
                             <div><strong>{student.name}</strong><span>{student.student_number}</span></div>
                           </div>
                         </td>
-                        <td><strong className="student-course">{student.course}</strong></td>
-                        <td><span className="year-badge">{student.year_level}</span></td>
                         <td>{student.email}</td>
                         <td>{student.loan_status === 'returned' && student.borrowed_book ? <><span className="muted">Returned: </span>{student.borrowed_book}</> : student.borrowed_book || <span className="muted">No book currently borrowed</span>}</td>
                         <td>{student.borrowed_at ? formatDate(student.borrowed_at) : <span className="muted">—</span>}</td>
                         <td>{student.days_borrowed === null ? <span className="muted">—</span> : `${student.days_borrowed} ${student.days_borrowed === 1 ? 'day' : 'days'}`}</td>
+                        <td>{student.due_date ? formatDate(student.due_date) : <span className="muted">—</span>}</td>
                         <td className={student.overdue_days ? 'overdue-date' : ''}>{student.overdue_days ? `${student.overdue_days} ${student.overdue_days === 1 ? 'day' : 'days'}` : <span className="muted">0 days</span>}</td>
                         <td className={student.penalty ? 'overdue-date' : ''}>{student.penalty ? `₱${student.penalty}` : <span className="muted">₱0</span>}</td>
-                        <td>{student.due_date ? formatDate(student.due_date) : <span className="muted">—</span>}</td>
                         <td>
                           <button type="button" className="history-icon-button" title={`View borrowing history for ${student.name}`} aria-label={`View borrowing history for ${student.name}`} onClick={() => openBorrowingHistory(student)}><Eye size={15} /></button>
                           <button className="edit-button" onClick={() => setEditingStudent(student)}>Edit</button>
@@ -286,7 +282,7 @@ function App() {
                         </td>
                       </tr>
                     ))}
-                    {visibleStudents.length === 0 && <tr><td colSpan={11} style={{ textAlign: 'center', padding: 28 }} className="muted">No students match your search or filter.</td></tr>}
+                    {visibleStudents.length === 0 && <tr><td colSpan={9} style={{ textAlign: 'center', padding: 28 }} className="muted">No students match your search or filter.</td></tr>}
                   </tbody>
                 </table>
               </div>
