@@ -93,7 +93,7 @@ function App() {
     setPhoneAlertsEnabled(enabled)
 
     if (enabled) {
-      new Notification('Shelfwise alerts enabled', {
+      new Notification('Booktrack alerts enabled', {
         body: 'You will receive due-date reminders when books are near the deadline.',
       })
       setApiError('')
@@ -131,7 +131,7 @@ function App() {
     if (reminderSentRef.current === key) return
 
     reminderSentRef.current = key
-    new Notification('Shelfwise due-date reminder', {
+    new Notification('Booktrack due-date reminder', {
       body: `${nextReminder.student} has "${nextReminder.title}" due ${nextReminder.days_left === 0 ? 'today' : `in ${nextReminder.days_left} days`}.`,
     })
   }, [notifications])
@@ -359,7 +359,7 @@ function App() {
                 <button className="primary-button" type="submit" disabled={smtpTesting || !smtpTestEmail}>{smtpTesting ? 'Sending test email…' : 'Send test email'}</button>
               </form>
               <div className="task-list">
-                <div className="task-item gold"><div className="task-dot" /><div><strong>Automatic due-date reminders</strong><small>When SMTP is configured, Shelfwise sends email reminders 7, 3, and 1 day before the due date, on the due date, and daily while overdue.</small></div></div>
+                <div className="task-item gold"><div className="task-dot" /><div><strong>Automatic due-date reminders</strong><small>When SMTP is configured, Booktrack sends email reminders 7, 3, and 1 day before the due date, on the due date, and daily while overdue.</small></div></div>
               </div>
             </div>
           </section>
@@ -462,13 +462,13 @@ function App() {
     )
   }
 
-  if (!token || !currentUser) return <main className="login-shell"><form className="login-card" onSubmit={login}><div className="login-logo-wrap"><img className="login-logo" src={shelfwiseLogo} alt="Shelfwise — Smart. Organized. Knowledge." /></div><span className="eyebrow">SHELFWISE LIBRARY</span><h1>Welcome back</h1><p>Sign in to manage library records.</p><label>Email address<input type="email" required value={loginEmail} onChange={e => setLoginEmail(e.target.value)} placeholder="you@library.edu" /></label><label>Password<input type="password" required value={loginPassword} onChange={e => setLoginPassword(e.target.value)} placeholder="Enter your password" /></label>{loginError && <p role="alert" className="form-error">{loginError}</p>}<button className="primary-button login-submit" type="submit">Sign in</button></form></main>
+  if (!token || !currentUser) return <main className="login-shell"><form className="login-card" onSubmit={login}><div className="login-logo-wrap"><img className="login-logo" src={shelfwiseLogo} alt="Booktrack — Smart. Organized. Knowledge." /></div><span className="eyebrow">BOOKTRACK LIBRARY</span><h1>Welcome back</h1><p>Sign in to manage library records.</p><label>Email address<input type="email" required value={loginEmail} onChange={e => setLoginEmail(e.target.value)} placeholder="you@library.edu" /></label><label>Password<input type="password" required value={loginPassword} onChange={e => setLoginPassword(e.target.value)} placeholder="Enter your password" /></label>{loginError && <p role="alert" className="form-error">{loginError}</p>}<button className="primary-button login-submit" type="submit">Sign in</button></form></main>
   return <div className="app-shell">
     <button type="button" className="signout-button" onClick={() => { sessionStorage.removeItem('library_token'); setToken(''); setCurrentUser(null); setBooks([]); setStudents([]) }}><LogOut size={14}/> Sign out</button>
     <aside className="dashboard-sidebar">
       <div className="brand">
         <img className="sidebar-logo" src={shelfwiseLogo} alt="" />
-        <span className="brand-name">Shelfwise</span>
+        <span className="brand-name">Booktrack</span>
       </div>
 
       <div className="workspace-label">BORROWING MONITOR</div>
@@ -610,3 +610,4 @@ function BorrowingHistoryModal({ student, onClose }: { student: Student; onClose
 function EditStudentModal({ student, onClose, onSaved }: { student: Student; onClose: () => void; onSaved: () => void }) { const [form, setForm] = useState({ name: student.name, course: student.course, year_level: student.year_level, email: student.email }); const [error, setError] = useState(''); async function submit(event: React.FormEvent) { event.preventDefault(); const response = await apiFetch(`${API}/students/${student.id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(form) }); if (!response.ok) { setError((await response.json()).error); return } onSaved() } return <div className="modal-backdrop" onMouseDown={(event) => event.target === event.currentTarget && onClose()}><form className="modal" onSubmit={submit}><div className="modal-heading"><div><span className="eyebrow">STUDENT RECORD</span><h2>Edit student</h2></div><button type="button" className="icon-button" onClick={onClose}><X size={19} /></button></div><label>Name<input required value={form.name} onChange={(event) => setForm({ ...form, name: event.target.value })} /></label><label>Course / program<select required value={form.course} onChange={(event) => setForm({ ...form, course: event.target.value })}>{COURSES.map(course => <option key={course} value={course}>{course}</option>)}</select></label><label>Year<select required value={form.year_level} onChange={(event) => setForm({ ...form, year_level: event.target.value })}><option>1st year</option><option>2nd year</option><option>3rd year</option><option>4th year</option></select></label><label>Email<input required type="email" value={form.email} onChange={(event) => setForm({ ...form, email: event.target.value })} /></label>{error && <div className="form-error">{error}</div>}<div className="modal-actions"><button type="button" className="ghost-button" onClick={onClose}>Cancel</button><button className="primary-button" type="submit">Save changes</button></div></form></div> }
 
 export default App
+
